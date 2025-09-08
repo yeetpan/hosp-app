@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title="My Bookings" icon-name="standard:service_appointment">
+        <div class="slds-p-around_small">
+            <!-- Filter -->
+            <lightning-combobox
+                name="statusFilter"
+                label="Filter by Status"
+                value={selectedStatus}
+                options={statusOptions}
+                onchange={handleFilterChange}>
+            </lightning-combobox>
+        </div>
+
+        <!-- Data Table -->
+        <lightning-datatable
+            key-field="Id"
+            data={filteredBookings}
+            columns={columns}
+            hide-checkbox-column>
+        </lightning-datatable>
+    </lightning-card>
+</template>

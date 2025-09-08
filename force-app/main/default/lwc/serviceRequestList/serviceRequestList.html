@@ -1,0 +1,47 @@
+<template>
+    <!-- Loading -->
+    <template if:true={loading}>
+        <div class="slds-p-around_medium slds-align_absolute-center">
+            <lightning-spinner size="medium" alternative-text="Loading cases..."></lightning-spinner>
+        </div>
+    </template>
+
+    <!-- Case Cards inside parent card -->
+    <template if:true={hasCases}>
+        <lightning-card title="My Service Requests" icon-name="standard:case">
+            <div class="slds-p-around_medium">
+                <div class="slds-scrollable_y" style="max-height: 500px;">
+                    <template for:each={cases} for:item="caseItem">
+                        <lightning-card key={caseItem.Id} class="slds-m-bottom_medium" icon-name="standard:record">
+                            <!-- Dynamic Title -->
+                            <h3 slot="title">Case {caseItem.CaseNumber}</h3>
+
+                            <div class="slds-p-around_medium slds-border_bottom">
+                                <p class="slds-text-title_bold">Subject</p>
+                                <p class="slds-m-bottom_small">{caseItem.Subject}</p>
+
+                                <p class="slds-text-title_bold">Request Type</p>
+                                <p class="slds-m-bottom_small">{caseItem.Request_Type__c}</p>
+
+                                <p class="slds-text-title_bold">Status</p>
+                                <p class="slds-m-bottom_small">{caseItem.Status}</p>
+
+                               
+                                <p class="slds-text-title_bold">Created</p>
+                                <p class="slds-m-bottom_small">{caseItem.CreatedDate}</p>
+
+                                <p class="slds-text-title_bold">Comments</p>
+                                <p>{caseItem.Comments__c}</p>
+                            </div>
+                        </lightning-card>
+                    </template>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+
+    <!-- Error -->
+    <template if:true={error}>
+        <p class="slds-text-color_error slds-p-around_medium">{error}</p>
+    </template>
+</template>

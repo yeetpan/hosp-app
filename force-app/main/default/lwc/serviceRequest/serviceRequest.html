@@ -1,0 +1,95 @@
+<template>
+  <lightning-card title="Create Service Request" icon-name="standard:case">
+    <div class="slds-p-around_medium">
+      <template if:true={loading}>
+        <lightning-spinner
+          alternative-text="Loading..."
+          size="small"
+        ></lightning-spinner>
+      </template>
+
+      <!-- Bookings table -->
+      <template if:true={bookings.length}>
+        <p class="slds-text-title_bold slds-m-bottom_small">Select Booking</p>
+        <lightning-datatable
+          key-field="Id"
+          data={bookings}
+          columns={columns}
+          hide-checkbox-column="true"
+          onrowaction={handleRowAction}
+        >
+        </lightning-datatable>
+        <p class="slds-m-top_small">
+          Click <b>Open</b> on a Booking to create a Service Request for it.
+        </p>
+      </template>
+
+      <template if:false={bookings.length}>
+        <div class="slds-text-body_regular slds-m-top_small">
+          No confirmed or checked-in bookings found.
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+
+  <!-- Modal: Create Service Request -->
+  <template if:true={isModalOpen}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 class="slds-text-heading_medium">New Service Request</h2>
+        </header>
+
+        <div class="slds-modal__content slds-p-around_medium">
+          <div class="slds-m-bottom_small">
+            <b>Booking:</b> {selectedBooking.Name}
+          </div>
+          <div class="slds-m-bottom_small">
+            <b>Room:</b> {selectedBooking.Room__r.Name}
+            ({selectedBooking.Room__r.Room_Type__c})
+          </div>
+          <div class="slds-m-bottom_small">
+            <lightning-combobox
+              name="requestType"
+              label="Request Type"
+              value={requestType}
+              placeholder="--None--"
+              options={requestTypeOptions}
+              onchange={onRequestTypeChange}
+              required
+            >
+            </lightning-combobox>
+          </div>
+
+          <lightning-input
+            label="Subject"
+            value={subject}
+            onchange={onSubjectChange}
+            required
+          ></lightning-input>
+          <lightning-textarea
+            label="Comments / Details"
+            value={comments}
+            onchange={onCommentsChange}
+            required
+          ></lightning-textarea>
+        </div>
+
+        <footer class="slds-modal__footer">
+          <lightning-button
+            variant="neutral"
+            label="Cancel"
+            onclick={closeModal}
+          ></lightning-button>
+          <lightning-button
+            variant="brand"
+            label="Create Request"
+            onclick={handleCreateRequest}
+            class="slds-m-left_small"
+          ></lightning-button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

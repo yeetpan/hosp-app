@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="Book a Room" icon-name="utility:date_input">
+        <div class="slds-p-around_medium">
+            
+            <!-- Step 1: Guest & Dates -->
+            <lightning-input type="date" label="Check-In Date" value={checkIn}
+                onchange={handleCheckInChange} required>
+            </lightning-input>
+
+            <lightning-input type="date" label="Check-Out Date" value={checkOut}
+                onchange={handleCheckOutChange} required>
+            </lightning-input>
+
+            <lightning-input type="number" label="Number of Guests" value={guests}
+                min="1" onchange={handleGuestsChange} required>
+            </lightning-input>
+
+            <!-- Step 2: Room Type - only show after all inputs are valid -->
+            <template if:true={canSelectRoomType}>
+                <lightning-combobox 
+                    label="Select Room Type"
+                    value={roomType}
+                    options={roomTypeOptions}
+                    onchange={handleRoomTypeChange}>
+                </lightning-combobox>
+            </template>
+
+            <!-- Step 3: Available Rooms - only show if roomType selected -->
+            <template if:true={rooms.length}>
+                <div class="slds-m-top_medium">
+                    <p class="slds-text-title_bold">Available Rooms:</p>
+                    <lightning-radio-group
+                        name="roomSelect"
+                        label="Choose a Room"
+                        options={roomOptions}
+                        value={selectedRoomId}
+                        type="radio"
+                        onchange={handleRoomSelect}>
+                    </lightning-radio-group>
+                </div>
+            </template>
+
+            <!-- Step 4: Book Now -->
+            <template if:true={selectedRoomId}>
+                <div class="slds-m-top_medium">
+                    <lightning-button variant="brand" label="Book Now"
+                        onclick={handleBookingSubmit}>
+                    </lightning-button>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

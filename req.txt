@@ -1,0 +1,361 @@
+Class: AccountOOPManager (Full Conceptual Design)
+Purpose:
+
+Explain constructor role to trainees.
+Method 1: loadAccountsDynamicSOQL(fieldName, value)
+Purpose: Load accounts dynamically by any field and populate multiple collections.
+Conceptual Steps:
+Validate inputs (fieldName and value).
+Initialize local List for queried accounts.
+Initialize Map<Id, Account> for temporary account mapping.
+Initialize Set<String> for account names.
+Initialize Map<String, List<Account>> for grouping by field value.
+Initialize Set<Id> for processed account Ids.
+Build dynamic SOQL string.
+Execute dynamic SOQL using Database.query().
+Loop through queried accounts:
+Add Id to processed Ids.
+Add Name to name set.
+Add account to temp map.
+Add account to field value map.
+Increment totalAccountsProcessed.
+Nested loop: loop through characters of account names for unique character Set.
+Update class instance variable allAccounts.
+Update accountMap with temp map.
+Group accounts by Industry into industryAccountsMap.
+Call helper method to log accounts.
+Wrap in try-catch for error handling.
+Debug collection sizes.
+Validate map keys and values.
+Loop to ensure no duplicates in Sets.
+Test with single field.
+Test with multiple records.
+Test empty input.
+Test null input.
+Loop to debug dynamic query results.
+Nested loop: loop through Map<fieldValue, List<Account>> to debug accounts.
+Explain why Map<Id, Account> is efficient.
+Explain Set uniqueness.
+Use Map<Id,List<Object>> concept via industry grouping.
+Debug nested loops output.
+Increment totalAccountsProcessed correctly.
+Add comments for trainee clarity.
+Confirm instance variables updated.
+Explain bulk-safe design.
+Loop through all accounts to check null fields.
+Nested loop: analyze each word in account names.
+Populate Set of unique words.
+Debug total unique words.
+Nested loop: loop through characters per word.
+Debug unique character count.
+Test with large datasets.
+Confirm method updates state but returns void.
+Explain helper method usage.
+Debug name Set.
+Debug Id Map.
+Debug Map<String, List<Account>> grouping.
+Comment on why dynamic SOQL is useful.
+Nested loop: validate accounts per field value.
+Debug processedIds Set.
+Explain why nested loops are needed.
+Confirm all accounts counted in totalAccountsProcessed.
+Add trainee notes on Map vs List.
+Debug account names per field value.
+Explain bulk-safe iteration.
+Nested loop: loop through industry map keys and values.
+Debug accounts per industry.
+Add comments for readability.
+Explain why fieldName dynamic helps generic methods.
+Confirm all collections populated correctly.
+Add example in comments for trainee usage.
+Nested loop: iterate over name characters per account.
+Final debug statement: “Dynamic load complete.”
+Method 2: groupAccountsByIndustry()
+Purpose: Group accounts by Industry with nested loops and collection operations.
+Steps:
+Initialize temporary Map<String, List<Account>>.
+Initialize Set<String> for unique industries.
+Initialize Map<Id, String> mapping account Id to Industry.
+Loop through allAccounts.
+Map account Id to Industry.
+Add industry to set.
+If industry not in map, initialize new list.
+Add account to industry list in map.
+Increment totalAccountsProcessed.
+Nested loop: for each industry, loop through accounts for debug.
+Optional nested loop: split account names into words, add to Set.
+Debug number of unique words per industry.
+Update instance variable industryAccountsMap.
+Debug map size.
+Loop through map values to count accounts per industry.
+Nested loop: characters in names per industry.
+Debug character count.
+Validate Map<Id,List<Object>> concept.
+Debug total accounts processed.
+Add comments explaining each collection operation.
+Ensure uniqueness using Set.
+Test with empty allAccounts.
+Test multiple industries.
+Confirm totalAccountsProcessed matches count.
+Nested loop: iterate industries, then accounts, then name words.
+Debug output at each nested level.
+Ensure no null keys.
+Debug industry-wise account counts.
+Check collection sizes match expected.
+Nested loop: count characters per account name.
+Debug average number of accounts per industry.
+Ensure bulk-safe operations.
+Add helper comments for trainee clarity.
+Confirm method updates instance variable correctly.
+Explain why Maps are used for grouping.
+Debug Sets of unique industries.
+Nested loop: iterate accounts to check Id uniqueness.
+Add notes on why nested loops are necessary.
+Loop through industryAccountsMap values for verification.
+Debug account names per industry.
+Confirm Map assignments complete.
+Debug processedIds for trainee reference.
+Nested loop: iterate over all characters in all names.
+Validate uniqueness in nested Sets.
+Debug total character count.
+Add trainee notes on loops and collection operations.
+Explain difference between List and Set in this context.
+Confirm instance map ready for reporting.
+Nested loop: iterate names per industry for logging.
+Debug collection sizes after each major step.
+Confirm totalAccountsProcessed incremented correctly.
+Validate map keys and values not null.
+Add debug for final grouping.
+Nested loop: iterate accounts and names for analysis.
+Validate allAccounts list integrity.
+Confirm industryAccountsMap has no duplicates.
+Debug helper method usage if needed.
+Add comments on why nested loops improve trainee understanding.
+Debug final summary per industry.
+Final debug statement: “Grouping by Industry complete.”
+Method 3: getAllAccountNames()
+Purpose: Extract all account names, ensure uniqueness, practice nested loops.
+Steps:
+Initialize List<String> for all names.
+Initialize Set<String> for unique names.
+Initialize Map<String, Integer> to count duplicates.
+Loop through allAccounts.
+Add Name to List and Set.
+Update count in Map.
+Nested loop: iterate characters in each name.
+Add characters to Set<String> for uniqueness.
+Nested loop: iterate words in name for word Set.
+Debug all collections.
+Validate counts in Map.
+Debug character counts.
+Ensure List contains all names.
+Ensure Set contains unique names.
+Loop through Map for duplicate counts.
+Nested loop: iterate words per name.
+Debug word Set size.
+Validate uniqueness in nested Set.
+Loop to debug all name characters.
+Confirm method returns List of names.
+Debug total accounts processed.
+Add helper comment: why nested loops help.
+Validate data integrity.
+Test with empty allAccounts.
+Test multiple names per account.
+Debug map key-value correctness.
+Loop to check null names.
+Nested loop: debug character sets.
+Confirm no duplicates.
+Add trainee notes on collection operations.
+Debug final List size.
+Nested loop: iterate words per account.
+Debug word count per account.
+Confirm Set ensures uniqueness.
+Nested loop: iterate each character of each word.
+Debug character count per word.
+Confirm Map counting logic correct.
+Add comments on bulk-safe practice.
+Debug all collections after loop.
+Confirm method ready for practice.
+Optional nested loop: for future dynamic analysis.
+Add notes on Map vs Set differences.
+Loop to check consistency with allAccounts list.
+Debug helper sub-method call.
+Validate Map<Id,List<Object>> relevance.
+Loop to check null/empty names.
+Debug name count summary.
+Confirm character set counts match expectations.
+Nested loop: iterate characters per account name.
+Validate uniqueness.
+Debug totalAccountsProcessed.
+Loop through name Map for debug.
+Add comment: importance of nested loops.
+Confirm collections populated correctly.
+Loop to analyze word counts.
+Debug word Map size.
+Confirm Set uniqueness.
+Nested loop: iterate names and words.
+Add trainee instruction comment.
+Final debug statement: “All account names extracted.”
+Method 4: countAccountsByIndustry()
+Purpose: Count accounts per Industry and demonstrate nested loops and Map operations.
+Steps:
+Initialize Map<String, Integer> for counts.
+Initialize Set<String> for unique industries.
+Loop through allAccounts:
+Get industry.
+Skip nulls.
+Add industry to set.
+Increment count in Map.
+Increment totalAccountsProcessed.
+Nested loop: iterate industries and debug accounts.
+Nested loop: analyze words in account names per industry.
+Nested loop: iterate characters per word for uniqueness.
+Debug collection sizes.
+Validate Map counts.
+Ensure Set uniqueness.
+Debug totalAccountsProcessed.
+Loop to verify all industries included.
+Nested loop: iterate accounts for logging.
+Loop Map values to sum accounts per industry.
+Nested loop: iterate words in account names.
+Debug total word count.
+Loop through Map for final debug.
+Nested loop: iterate characters per account name.
+Debug character counts.
+Validate bulk-safe iteration.
+Nested loop: iterate accounts per industry.
+Add trainee comment for nested loops.
+Debug final industry Map.
+Ensure allAccounts list intact.
+Nested loop: iterate characters for uniqueness.
+Debug Set sizes.
+Validate Map keys and values.
+Loop Map for debugging purposes.
+Nested loop: iterate account names for word extraction.
+Debug word Map.
+Confirm counts per industry.
+Nested loop: iterate characters per word.
+Debug uniqueness.
+Loop to check null/empty names.
+Nested loop: analyze special characters.
+Debug character counts.
+Confirm instance variable updates.
+Add comment for trainee clarity.
+Debug final Map after loops.
+Loop through Set for verification.
+Nested loop: iterate accounts and words.
+Validate Map size equals unique industries.
+Debug processedIds if needed.
+Loop to check for duplicates.
+Debug totalAccountsProcessed.
+Nested loop: iterate words and characters.
+Debug final collection sizes.
+Confirm all data captured.
+Add comment: importance of nested loops.
+Loop to check Map<Id,List<Object>> assignment.
+Debug all counts.
+Nested loop: iterate industries, accounts, words.
+Validate all collections correct.
+Debug for trainee practice.
+Confirm Map ready for reporting.
+Loop for final verification.
+Debug each account per industry.
+Confirm bulk-safe.
+Nested loop: iterate all characters.
+Add notes on collection management.
+Final debug: “Count by Industry complete.”
+Method 5: clearAllData()
+Purpose: Clear all lists, maps, and reset object state.
+Steps:
+Clear allAccounts List.
+Clear accountMap.
+Clear industryAccountsMap.
+Debug: “All data cleared.”
+Reset or debug static totalAccountsProcessed if needed.
+Confirm instance variables are empty.
+Comment: important for reusing object.
+Explain why clearing collections is bulk-safe.
+Add trainee note: method resets class state.
+Validate all collections empty.
+
+11-60. (Repeat conceptually with debug, checking empty collections, confirming reset state, optional loops to confirm emptiness, nested loops can iterate to verify all cleared).
+ 
+Helper/Sub-Method: logAccounts(List<Account>)
+Purpose:
+Demonstrate sub-method reusability.
+Practice nested loops, collections, Maps, Sets, and character/word extraction.
+Train students on iterating complex data structures.
+Conceptual Steps (1–60)
+Receive a List<Account> as input.
+Initialize Set<Id> to track processed accounts.
+Initialize Set<String> to track unique account names.
+Initialize Map<Id, String> to map account Id to Name.
+Initialize Map<String, Integer> to count occurrences of each account name.
+Initialize Map<String, List<Character>> to store characters per account name.
+Initialize Map<String, Integer> to count characters per account name.
+Initialize Map<String, Set<String>> to store unique words per account.
+Initialize List<String> for all words across accounts.
+Initialize Set<String> for unique words across all accounts.
+Loop through Accounts:
+Loop through each account in input List.
+Add account Id to processed Id Set.
+Add account Name to unique name Set.
+Add account Name to Map<Id, Name>.
+Increment count of the name in Map<String, Integer>.
+Debug account Id.
+Debug account Name.
+Check if Name is null; skip if null.
+Loop through each character in account Name.
+Add character to Map<String, List<Character>>.
+Increment character count in Map<String, Integer>.
+Nested loop: check for duplicate characters per account.
+Debug unique character count per account.
+Split account Name into words.
+Loop through words.
+Add each word to Map<String, Set<String>> for account.
+Add word to all words List.
+Add word to global unique words Set.
+Increment word count per account.
+Debug words per account.
+Debug word counts per account.
+Nested loop: iterate characters in each word.
+Debug each character in word.
+Add character to Set of all characters.
+Increment total character count.
+Nested loop: compare characters with other account names for duplicates.
+Debug duplicated characters if any.
+Add account to a temporary List for logging purposes.
+Map account Id to its list of words.
+Nested loop: iterate words and characters for deeper analysis.
+Debug number of words per account.
+Debug number of unique characters per account.
+Debug total words processed so far.
+Debug total unique words processed so far.
+Loop through Map<Id, Name> to verify all accounts processed.
+Loop through Set of unique names to confirm uniqueness.
+Loop through Map<String, List<Character>> to debug characters per account.
+Loop through Map<String, Set<String>> to debug words per account.
+Nested loop: iterate accounts and their characters for logging.
+Nested loop: iterate accounts and words for logging.
+Nested loop: iterate all characters and compare with global unique Set.
+Debug total unique characters across all accounts.
+Loop to summarize total accounts processed.
+Loop to summarize total words processed.
+Loop to summarize total unique words.
+Nested loop: iterate words, then characters, then accounts for advanced debugging.
+Loop through temporary logging List to debug each account sequentially.
+Debug Map of Id to Name for validation.
+Debug final counts and collection sizes.
+Print final summary statement: “Logging completed for X accounts, Y unique names, Z unique words, W unique characters.”
+✅ Features of This Helper Method
+Nested Loops: Characters per account, words per account, and cross-account character comparisons.
+Collections:
+Lists: all words, temporary logging list
+Sets: unique names, unique words, unique characters
+Maps: Id->Name, Name->Count, Name->Character List, Name->Word Set
+Reusability: Can be called from multiple main methods (loadAccountsDynamicSOQL, groupAccountsByIndustry, etc.).
+Debugging Practice: Step-by-step debug for every collection and nested loop.
+Trainee Practice: Students can implement each step as a separate operation and understand how nested collections work in Apex.
+ 
+ 
+ 
