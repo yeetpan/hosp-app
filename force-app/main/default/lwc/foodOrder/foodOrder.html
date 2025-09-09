@@ -1,0 +1,120 @@
+<template>
+  <lightning-card title="Food Orders" icon-name="standard:orders">
+    <lightning-tabset>
+      
+      <!-- 1. Place Order -->
+      <lightning-tab label="Place Order" value="placeOrder">
+        <div class="slds-p-around_medium">
+
+          <!-- Active Booking Selector -->
+          <lightning-combobox
+            name="booking"
+            label="Select Room"
+            value={selectedBooking}
+            placeholder="Select Active Booking"
+            options={bookingOptions}
+            onchange={handleBookingChange}>
+          </lightning-combobox>
+
+          <!-- Special Notes -->
+          <lightning-textarea
+            class="slds-m-top_medium"
+            label="Special Notes"
+            value={specialNotes}
+            onchange={handleNotesChange}>
+          </lightning-textarea>
+
+          <!-- Food Menu -->
+          <template if:true={foodItems}>
+            <lightning-datatable
+              key-field="Id"
+              data={foodItems}
+              columns={columns}
+              draft-values={draftValues}
+              onsave={handleSave}
+              hide-checkbox-column="true"
+              class="slds-m-top_medium slds-box slds-scrollable_y menu-box">
+            </lightning-datatable>
+          </template>
+
+          <!-- Place Order Button -->
+          <div class="slds-m-top_medium">
+            <lightning-button
+              variant="brand"
+              label="Place Order"
+              onclick={handlePlaceOrder}>
+            </lightning-button>
+          </div>
+        </div>
+      </lightning-tab>
+
+      <!-- 2. Active Orders -->
+       
+      <lightning-tab label="Active Orders" value="activeOrders">
+        <template if:true={activeOrders}>
+          <div class="slds-p-around_medium slds-scrollable_y orders-box">
+            <template for:each={activeOrders} for:item="order">
+              <lightning-card key={order.Id} icon-name="standard:orders">
+                <h3 slot="title">Room: {order.Booking__r.Room__r.Name}</h3>
+                <div class="slds-p-around_small">
+                  <p><b>Status:</b> {order.Status__c}</p>
+                  <p><b>Total:</b> ₹{order.Total_Amount__c}</p>
+                  <p><b>Notes:</b> {order.Special_Notes__c}</p>
+                  <ul>
+                    <template for:each={order.Food_Order_Items__r} for:item="oi">
+                      <li key={oi.Id}>
+                        {oi.Food_Item__r.Name} — {oi.Quantity__c} × ₹{oi.Line_Total__c}
+                      </li>
+                    </template>
+                  </ul>
+                  <lightning-button
+                    variant="destructive"
+                    label="Cancel Order"
+                    data-id={order.Id}
+                    onclick={handleCancel}>
+                  </lightning-button>
+                </div>
+              </lightning-card>
+            </template>
+          </div>
+        </template>
+        <template if:false={activeOrders}>
+          <p class="slds-p-around_medium slds-text-color_weak">
+            No active orders found.
+          </p>
+        </template>
+      </lightning-tab>
+
+      <!-- 3. Order History -->
+      <lightning-tab label="Order History" value="history">
+        <template if:true={orderHistory}>
+          <div class="slds-p-around_medium slds-scrollable_y orders-box">
+            <template for:each={orderHistory} for:item="order">
+              <lightning-card key={order.Id} icon-name="standard:orders">
+                <h3 slot="title">Room: {order.Booking__r.Room__r.Name}</h3>
+                <div class="slds-p-around_small">
+                  <p><b>Status:</b> {order.Status__c}</p>
+                  <p><b>Total:</b> ₹{order.Total_Amount__c}</p>
+                  <p><b>Notes:</b> {order.Special_Notes__c}</p>
+                  <ul>
+                    <template for:each={order.Food_Order_Items__r} for:item="oi">
+                      <li key={oi.Id}>
+                        {oi.Food_Item__r.Name} — {oi.Quantity__c} × ₹{oi.Line_Total__c}
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </lightning-card>
+            </template>
+          </div>
+        </template>
+        <template if:false={orderHistory}>
+          <p class="slds-p-around_medium slds-text-color_weak">
+            No past orders found.
+          </p>
+        </template>
+      </lightning-tab>
+
+    </lightning-tabset>
+  </lightning-card>
+</template>
