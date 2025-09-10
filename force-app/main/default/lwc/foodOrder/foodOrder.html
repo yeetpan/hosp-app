@@ -1,6 +1,6 @@
 <template>
   <lightning-card title="Food Orders" icon-name="standard:orders">
-    <lightning-tabset>
+    <lightning-tabset onactive={handleTabChange}>
       
       <!-- 1. Place Order -->
       <lightning-tab label="Place Order" value="placeOrder">

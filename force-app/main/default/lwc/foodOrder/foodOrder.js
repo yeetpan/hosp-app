@@ -70,7 +70,7 @@ export default class FoodOrder extends LightningElement {
         ]);
 
         this.activeOrders = active || [];
-        this.orderHistory = history || [];
+        this.orderHistory = history || [];  
         console.log(this.activeOrders,this.orderHistory);
     } catch (error) {
         console.error('Error loading orders:', error);
@@ -141,6 +141,12 @@ export default class FoodOrder extends LightningElement {
         this.foodItems = this.foodItems.map(f => ({ ...f, Quantity__c: 0 }));
     }
 
+    handleTabChange(event) {
+    const tabValue = event.target.value;
+    if (tabValue === 'activeOrders' || tabValue === 'history') {
+        this.loadOrders();
+    }
+}
     showToast(title, message, variant) {
         this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
     }
