@@ -12,11 +12,8 @@ public with sharing class BookingController {
     @AuraEnabled
     public static Booking__c createBooking(Date checkIn, Date checkOut, Integer noOfGuests, Id roomId,Decimal totalAmount ) {
         Id contactId = UserUtils.getSessionContactId();
-        if (contactId == null) {
-            throw new AuraHandledException('No Contact associated with this user.');
-        }
-
-        // Step 1: Create Booking Record
+        
+        //  Create Booking Record
         Booking__c booking = new Booking__c(
             Guestt__c = contactId,
             Check_In_Date__c = checkIn,
