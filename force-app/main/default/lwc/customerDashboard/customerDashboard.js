@@ -8,9 +8,20 @@ export default class Dashboard extends LightningElement {
     wiredStats({ data, error }) {
         if (data) {
             this.stats = data;
-            console.log('Dashboard Stats:', JSON.stringify(this.stats));
         } else if (error) {
-            console.error('Error fetching dashboard stats:', error);
+            console.error(error);
         }
+    }
+
+    get orderCompletionPercent() {
+        return this.stats.TotalOrders ? Math.round((this.stats.CompletedOrders / this.stats.TotalOrders) * 100) : 0;
+    }
+
+    get bookingActivePercent() {
+        return this.stats.TotalBookings ? Math.round((this.stats.ActiveBookings / this.stats.TotalBookings) * 100) : 0;
+    }
+
+    get requestClosedPercent() {
+        return this.stats.TotalRequests ? Math.round((this.stats.ClosedRequests / this.stats.TotalRequests) * 100) : 0;
     }
 }
