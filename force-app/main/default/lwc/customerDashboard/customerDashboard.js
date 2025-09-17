@@ -13,15 +13,4 @@ export default class Dashboard extends LightningElement {
         }
     }
 
-    get orderCompletionPercent() {
-        return this.stats.TotalOrders ? Math.round((this.stats.CompletedOrders / this.stats.TotalOrders) * 100) : 0;
-    }
-
-    get bookingActivePercent() {
-        return this.stats.TotalBookings ? Math.round((this.stats.ActiveBookings / this.stats.TotalBookings) * 100) : 0;
-    }
-
-    get requestClosedPercent() {
-        return this.stats.TotalRequests ? Math.round((this.stats.ClosedRequests / this.stats.TotalRequests) * 100) : 0;
-    }
 }

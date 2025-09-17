@@ -1,72 +1,40 @@
 <template>
-    <lightning-card title="My Dashboard" icon-name="standard:dashboard">
-        <div class="slds-p-around_medium slds-grid slds-wrap slds-gutters">
+    <lightning-card title=" My Dashboard" icon-name="standard:dashboard">
+        <div class="stats-container">
 
             <!-- Food Orders -->
-            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
-                <lightning-card>
-                    <div class="slds-p-around_medium slds-align_absolute-center slds-grid slds-wrap">
-                        <lightning-icon icon-name="standard:orders" size="small" class="slds-m-bottom_small"></lightning-icon>
-                        <h2 class="slds-text-heading_small slds-m-bottom_medium">Food Orders</h2>
-
-                        <lightning-progress-ring value={orderCompletionPercent} size="large" label="Completed">
-                        </lightning-progress-ring>
-
-                        <div class="slds-text-title slds-m-top_small">
-                            Total: {stats.TotalOrders} | Active: {stats.ActiveOrders} | Completed: {stats.CompletedOrders}
-                        </div>
-                    </div>
-                </lightning-card>
+            <div class="stat-card">
+                <lightning-icon icon-name="standard:orders" size="medium" class="stat-icon"></lightning-icon>
+                <h2 class="stat-title">Food Orders</h2>
+                <p class="stat-value gold">{stats.TotalOrders}</p>
+                <p class="stat-sub">Active: {stats.ActiveOrders} | Completed: {stats.CompletedOrders} | Cancelled: {stats.CancelledOrders}</p>
             </div>
 
             <!-- Bookings -->
-            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
-                <lightning-card>
-                    <div class="slds-p-around_medium slds-align_absolute-center slds-grid slds-wrap">
-                        <lightning-icon icon-name="standard:campaign_members" size="small" class="slds-m-bottom_small"></lightning-icon>
-                        <h2 class="slds-text-heading_small slds-m-bottom_medium">Bookings</h2>
-
-                        <lightning-progress-ring value={bookingActivePercent} size="large" variant="warning" label="Active">
-                        </lightning-progress-ring>
-
-                        <div class="slds-text-title slds-m-top_small">
-                            Total: {stats.TotalBookings} | Active: {stats.ActiveBookings} | Completed: {stats.CompletedBookings}
-                        </div>
-                    </div>
-                </lightning-card>
+            <div class="stat-card">
+                <lightning-icon icon-name="standard:campaign_members" size="medium" class="stat-icon"></lightning-icon>
+                <h2 class="stat-title">Bookings</h2>
+                <p class="stat-value gold">{stats.TotalBookings}</p>
+                <p class="stat-sub">Active: {stats.ActiveBookings} | Completed: {stats.CompletedBookings}</p>
             </div>
 
             <!-- Service Requests -->
-            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
-                <lightning-card>
-                    <div class="slds-p-around_medium slds-align_absolute-center slds-grid slds-wrap">
-                        <lightning-icon icon-name="standard:service_request" size="small" class="slds-m-bottom_small"></lightning-icon>
-                        <h2 class="slds-text-heading_small slds-m-bottom_medium">Service Requests</h2>
-
-                        <lightning-progress-ring value={requestClosedPercent} size="large" variant="success" label="Closed">
-                        </lightning-progress-ring>
-
-                        <div class="slds-text-title slds-m-top_small">
-                            Total: {stats.TotalRequests} | Open: {stats.OpenRequests} | Closed: {stats.ClosedRequests}
-                        </div>
-                    </div>
-                </lightning-card>
+            <div class="stat-card">
+                <lightning-icon icon-name="standard:service_request" size="medium" class="stat-icon"></lightning-icon>
+                <h2 class="stat-title">Service Requests</h2>
+                <p class="stat-value gold">{stats.TotalRequests}</p>
+                <p class="stat-sub">Open: {stats.OpenRequests} | Closed: {stats.ClosedRequests}</p>
             </div>
 
             <!-- Quick Stats -->
-            <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
-                <lightning-card>
-                    <div class="slds-p-around_medium slds-align_absolute-center slds-grid slds-wrap">
-                        <lightning-icon icon-name="utility:summary" size="small" class="slds-m-bottom_small"></lightning-icon>
-                        <h2 class="slds-text-heading_small slds-m-bottom_medium">Quick Stats</h2>
-
-                        <ul class="slds-list_dotted slds-m-left_medium slds-text-title">
-                            <li>Total Orders: {stats.TotalOrders}</li>
-                            <li>Total Bookings: {stats.TotalBookings}</li>
-                            <li>Total Requests: {stats.TotalRequests}</li>
-                        </ul>
-                    </div>
-                </lightning-card>
+            <div class="stat-card">
+                <lightning-icon icon-name="utility:summary" size="medium" class="stat-icon"></lightning-icon>
+                <h2 class="stat-title">Quick Stats</h2>
+                <ul class="stat-sub">
+                    <li>Orders: <span class="gold">{stats.TotalOrders}</span></li>
+                    <li>Bookings: <span class="gold">{stats.TotalBookings}</span></li>
+                    <li>Requests: <span class="gold">{stats.TotalRequests}</span></li>
+                </ul>
             </div>
 
         </div>

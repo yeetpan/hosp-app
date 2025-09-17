@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="✨ Quick Actions" icon-name="utility:apps">
+        <div class="tile-container">
+            <div class="tile" onclick={navigateToBooking}>
+                <lightning-icon icon-name="standard:event" size="large" class="tile-icon"></lightning-icon>
+                <p class="tile-title">Create a Booking</p>
+            </div>
+
+            <div class="tile" onclick={navigateToBookingList}>
+                <lightning-icon icon-name="standard:record" size="large" class="tile-icon"></lightning-icon>
+                <p class="tile-title">My Bookings</p>
+            </div>
+
+            <div class="tile" onclick={navigateToServiceRequest}>
+                <lightning-icon icon-name="standard:service_contract" size="large" class="tile-icon"></lightning-icon>
+                <p class="tile-title">Register a Request</p>
+            </div>
+
+            <div class="tile" onclick={navigateToServiceRequestList}>
+                <lightning-icon icon-name="standard:case" size="large" class="tile-icon"></lightning-icon>
+                <p class="tile-title">View My Requests</p>
+            </div>
+
+            <div class="tile" onclick={navigateToFoodOrder}>
+                <lightning-icon icon-name="standard:orders" size="large" class="tile-icon"></lightning-icon>
+                <p class="tile-title">Order Food</p>
+            </div>
+        </div>
+    </lightning-card>
+</template>

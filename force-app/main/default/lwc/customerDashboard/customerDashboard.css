@@ -1,35 +1,49 @@
-/* dashboard.css */
-
 .stats-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
+    gap: 1.5rem;
+    padding: 1.5rem;
 }
 
 .stat-card {
-    background: white;
+    background: #fff;
     border-radius: 0.75rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
     text-align: center;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-top: 4px solid #d4af37; /* gold accent */
 }
 
 .stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 .stat-title {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
-    color: #555;
-    margin-bottom: 0.5rem;
+    color: #444;
+    margin: 0.5rem 0;
 }
 
 .stat-value {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bold;
-    color: #0070d2; /* Salesforce blue */
+    margin: 0.5rem 0;
+}
+
+.gold {
+    color: #d4af37; /* gold */
+}
+
+.stat-sub {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.stat-icon {
+    margin-bottom: 0.5rem;
+    fill: #d4af37; /* gold tint for icons */
 }
