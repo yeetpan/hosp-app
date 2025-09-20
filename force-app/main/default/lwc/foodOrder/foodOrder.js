@@ -8,9 +8,9 @@ import getOrderHistory from '@salesforce/apex/FoodOrderController.getOrderHistor
 import cancelOrder from '@salesforce/apex/FoodOrderController.cancelOrder';
 
 export default class FoodOrder extends LightningElement {
-    @track selectedBooking;
+     selectedBooking;
     @track bookingOptions = [];
-    @track specialNotes = '';
+    specialNotes = '';
     @track foodItems = [];
     @track draftValues = [];
 

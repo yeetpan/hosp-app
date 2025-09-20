@@ -5,13 +5,13 @@ import createBooking from '@salesforce/apex/BookingController.createBooking';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BookingComponent extends NavigationMixin(LightningElement) {
-    @track checkIn;
-    @track checkOut;
-    @track guests;
-    @track roomType;
+     checkIn;
+     checkOut;
+     guests;
+     roomType;
     @track rooms = [];
-    @track selectedRoomId;
-    @track selectedRoomPrice;
+    selectedRoomId;
+    selectedRoomPrice;
 
     get roomTypeOptions() {
         return [

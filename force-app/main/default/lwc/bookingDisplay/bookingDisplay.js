@@ -6,8 +6,8 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 
 export default class BookingDisplay extends NavigationMixin(LightningElement) {
-    @track booking;
-    @track error;
+     booking;
+     error;
     recordId;
 
     wiredBookingResult; // store wire result for refreshApex

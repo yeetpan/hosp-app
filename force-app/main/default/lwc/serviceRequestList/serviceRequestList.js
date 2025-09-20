@@ -3,7 +3,7 @@ import getCases from '@salesforce/apex/CaseController.getCases';
 
 export default class ServiceRequestCards extends LightningElement {
     @track cases = [];
-    @track error;
+     error;
     loading = true;
 
     @wire(getCases)

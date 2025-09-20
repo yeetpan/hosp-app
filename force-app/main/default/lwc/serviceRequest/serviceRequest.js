@@ -22,11 +22,11 @@ export default class ServiceRequest extends LightningElement {
     @track loading = true;
 
     // modal & form state
-    @track isModalOpen = false;
-    @track selectedBooking = null;
-    @track subject = '';
-    @track comments = '';
-    @track requestType = '';
+     isModalOpen = false;
+     selectedBooking = null;
+     subject = '';
+     comments = '';
+     requestType = '';
 
     connectedCallback() {
         this.loadBookings();
