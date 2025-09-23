@@ -1,5 +1,6 @@
 import { LightningElement, wire, track } from 'lwc';
 import getUserBookings from '@salesforce/apex/BookingController.getUserBookings';
+import { refreshApex } from '@salesforce/apex';
 import { NavigationMixin } from 'lightning/navigation';
 
 const COLUMNS = [
@@ -24,7 +25,6 @@ export default class BookingList extends NavigationMixin(LightningElement) {
     columns = COLUMNS;
     loading = true;
 
-    // default filter => show Confirmed + Checked-In
     @track selectedStatus = 'Active';
 
     statusOptions = [
@@ -36,8 +36,13 @@ export default class BookingList extends NavigationMixin(LightningElement) {
         { label: 'All', value: 'All' }
     ];
 
+    wiredResult; 
+
     @wire(getUserBookings)
-    wiredBookings({ data, error }) {
+    wiredBookings(result) {
+        this.wiredResult = result; 
+        const { data, error } = result;
+
         if (data) {
             this.bookings = data.map(b => ({
                 Id: b.Id,
@@ -58,12 +63,10 @@ export default class BookingList extends NavigationMixin(LightningElement) {
         }
     }
 
-    //  handle filter change
     handleFilterChange(event) {
         this.selectedStatus = event.detail.value;
     }
 
-    //  filtered data for datatable
     get filteredBookings() {
         if (this.selectedStatus === 'All') {
             return this.bookings;
@@ -74,5 +77,9 @@ export default class BookingList extends NavigationMixin(LightningElement) {
             );
         }
         return this.bookings.filter(b => b.status === this.selectedStatus);
+    }
+    //  Render callback on component load.
+    renderedCallback() {
+        refreshApex(this.wiredResult);
     }
 }

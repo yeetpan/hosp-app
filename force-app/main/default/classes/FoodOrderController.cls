@@ -1,6 +1,6 @@
 public with sharing class FoodOrderController {
 
-    // 1. Get Active Bookings for current user
+    // 1. get bookings for user to order food on specific room.
     @AuraEnabled(cacheable=true)
     public static List<Booking__c> getActiveBookings() {
         Id contactId = UserUtils.getSessionContactId();
@@ -12,7 +12,7 @@ public with sharing class FoodOrderController {
         ];
     }
 
-    // 2. Get all available food items (menu)
+    // 2. get the menu to order food.
     @AuraEnabled(cacheable=true)
     public static List<Food_Item__c> getFoodItems() {
         return [
@@ -21,45 +21,62 @@ public with sharing class FoodOrderController {
         ];
     }
 
-    // 3. Place a new food order with multiple items
+    // 3. Place a new food order 
     @AuraEnabled
     public static Id placeFoodOrder(Id bookingId, String specialNotes, List<FoodOrderItemWrapper> items) {
-        if (items == null || items.isEmpty()) {
-            throw new AuraHandledException('No food items selected.');
-        }
-
-        // Create the Food Order record
-        Food_Order__c order = new Food_Order__c();
-        order.Booking__c = bookingId;
-        order.Status__c = 'Ordered';
-        order.Special_Notes__c = specialNotes;
-        insert order;
-
-        List<Food_Order_Item__c> orderItems = new List<Food_Order_Item__c>();
-        Decimal totalAmount = 0;
-
-        for (FoodOrderItemWrapper wrap : items) {
-            Food_Item__c fi = [SELECT Id, Price__c FROM Food_Item__c WHERE Id = :wrap.foodItemId LIMIT 1];
-            Decimal lineTotal = fi.Price__c * wrap.quantity;
-
-            orderItems.add(new Food_Order_Item__c(
-                Food_Order__c = order.Id,
-                Food_Item__c = wrap.foodItemId,
-                Quantity__c = wrap.quantity,
-                Line_Total__c = lineTotal
-            ));
-
-            totalAmount += lineTotal;
-        }
-
-        insert orderItems;
-
-        // Update total on order
-        order.Total_Amount__c = totalAmount;
-        update order;
-
-        return order.Id;
+    // null-check
+    if (items == null || items.isEmpty()) {
+        throw new AuraHandledException('No food items selected.');
     }
+
+    //create new food order record.
+    Food_Order__c order = new Food_Order__c(
+        Booking__c = bookingId,
+        Status__c = 'Ordered',
+        Special_Notes__c = specialNotes
+    );
+    insert order;
+
+    // store ids in the set to avoid redundancy as one can book multiple of the same food item.
+    Set<Id> foodItemIds = new Set<Id>();
+    for (FoodOrderItemWrapper wrap : items) {
+        foodItemIds.add(wrap.foodItemId);
+    }
+
+    // Step 3: Query all Food Items once
+    Map<Id, Food_Item__c> foodItemMap = new Map<Id, Food_Item__c>(
+        [SELECT Id, Price__c FROM Food_Item__c WHERE Id IN :foodItemIds]
+    );
+
+    // Step 4: Prepare Order Items
+    List<Food_Order_Item__c> orderItems = new List<Food_Order_Item__c>();
+    Decimal totalAmount = 0;
+
+    for (FoodOrderItemWrapper wrap : items) {
+        Food_Item__c fi = foodItemMap.get(wrap.foodItemId);
+        if (fi == null) {
+            throw new AuraHandledException('Invalid Food Item selected.');
+        }
+
+        Decimal lineTotal = fi.Price__c * wrap.quantity;
+
+        orderItems.add(new Food_Order_Item__c(
+            Food_Order__c = order.Id,
+            Food_Item__c = wrap.foodItemId,
+            Quantity__c = wrap.quantity,
+            Line_Total__c = lineTotal
+        ));
+
+        totalAmount += lineTotal;
+    }
+
+    insert orderItems;
+
+    order.Total_Amount__c = totalAmount;
+    update order;
+
+    return order.Id;
+}
 
     // 4. Get Active Orders (Ordered, Preparing, Reached)
     @AuraEnabled(cacheable=true)
@@ -84,7 +101,7 @@ public with sharing class FoodOrderController {
                    (SELECT Id, Food_Item__r.Name, Quantity__c, Line_Total__c
                     FROM Food_Order_Items__r)
             FROM Food_Order__c
-            WHERE Status__c IN ('Cancelled', 'Completed')
+            WHERE Status__c IN ('Cancelled', 'Reached')
             ORDER BY CreatedDate DESC
         ];
     }

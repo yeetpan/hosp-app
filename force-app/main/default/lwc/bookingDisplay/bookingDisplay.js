@@ -10,7 +10,7 @@ export default class BookingDisplay extends NavigationMixin(LightningElement) {
      error;
     recordId;
 
-    wiredBookingResult; // store wire result for refreshApex
+    wiredBookingResult; 
 
     @wire(CurrentPageReference)
     getPageRef(pageRef) {

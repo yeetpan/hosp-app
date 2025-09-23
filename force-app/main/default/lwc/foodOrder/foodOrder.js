@@ -69,15 +69,20 @@ export default class FoodOrder extends LightningElement {
             getOrderHistory()
         ]);
 
-        this.activeOrders = active || [];
-        this.orderHistory = history || [];  
-        console.log(this.activeOrders,this.orderHistory);
+        // ✅ store properly segregated
+        this.activeOrders = (active || []).filter(
+            o => o.Status__c === 'Ordered' || o.Status__c === 'In Progress'
+        );
+
+        this.orderHistory = (history || []).filter(
+            o => o.Status__c === 'Cancelled' || o.Status__c === 'Completed' || o.Status__c === 'Reached'
+        );
+
     } catch (error) {
         console.error('Error loading orders:', error);
         this.showToast('Error', 'Failed to load orders', 'error');
     }
 }
-
     handleBookingChange(event) {
         this.selectedBooking = event.detail.value;
     }
@@ -128,7 +133,7 @@ export default class FoodOrder extends LightningElement {
         try {
             await cancelOrder({ orderId });
             this.showToast('Success', 'Order cancelled.', 'success');
-            this.loadOrders();
+            this.connectedCallback();
         } catch (err) {
             console.error(err);
             this.showToast('Error', err.body.message, 'error');

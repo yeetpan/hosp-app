@@ -1,5 +1,5 @@
 public with sharing class UserUtils {
-    //for sharing data with LWC.
+    //middleware for checking contact session.
     @AuraEnabled(cacheable=true)
     public static Id getSessionContactId() {
         User u = [

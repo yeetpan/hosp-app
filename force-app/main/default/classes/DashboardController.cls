@@ -4,7 +4,6 @@ public with sharing class DashboardController {
         Id currentUserId = UserInfo.getUserId();
         Map<String, Integer> stats = new Map<String, Integer>();
 
-        // ---------------- FOOD ORDERS ----------------
         stats.put('TotalOrders', [
             SELECT COUNT() 
             FROM Food_Order__c 
@@ -22,7 +21,7 @@ public with sharing class DashboardController {
             SELECT COUNT() 
             FROM Food_Order__c 
             WHERE CreatedById = :currentUserId 
-            AND Status__c = 'Completed'
+            AND Status__c = 'Reached'
         ]);
 
         stats.put('CancelledOrders', [
@@ -50,7 +49,7 @@ public with sharing class DashboardController {
             SELECT COUNT() 
             FROM Booking__c 
             WHERE CreatedById = :currentUserId
-            AND Booking_Status__c = 'Checked-Out'
+            AND Booking_Status__c IN ('Checked-Out','Cancelled')
         ]);
 
         // ---------------- SERVICE REQUESTS ----------------
@@ -64,16 +63,15 @@ public with sharing class DashboardController {
             SELECT COUNT() 
             FROM Case 
             WHERE CreatedById = :currentUserId
-            AND Status = 'Open'
+            AND Status = 'Working'
         ]);
 
         stats.put('ClosedRequests', [
             SELECT COUNT() 
             FROM Case 
             WHERE CreatedById = :currentUserId
-            AND Status = 'Closed'
+            AND Status = 'Solved'
         ]);
-
         return stats;
     }
 }

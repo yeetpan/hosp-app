@@ -1,6 +1,5 @@
 public without sharing class CaseTriggerHandler {
     public static void handleAfterInsert(List<Case> newCases) {
-        // Collect booking-related cases
         List<Case> bookingCases = new List<Case>();
         for (Case c : newCases) {
             if (c.Booking__c != null) {

@@ -111,7 +111,7 @@ handleCheckOutChange(event) {
 
             this.showToast('Success', `Booking Confirmed! Total: ₹${totalAmount}`, 'success');
             this.resetForm();
-
+            
             this[NavigationMixin.Navigate]({
                 type: 'standard__webPage',
                 attributes: {

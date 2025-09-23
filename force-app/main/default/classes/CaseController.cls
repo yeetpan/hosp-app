@@ -1,7 +1,5 @@
 public with sharing class CaseController {
-  /**
-   * Return confirmed or checked-in bookings for current user's contact.
-   */
+  // Return confirmed or checked-in bookings for current user's contact.
   @AuraEnabled(cacheable=true)
   public static List<Booking__c> getConfirmedBookings() {
     Id contactId = UserUtils.getSessionContactId();
@@ -31,9 +29,7 @@ public with sharing class CaseController {
     ];
   }
 
-  /**
-   * Return single Booking with parent Room fields for pre-filling the service request form.
-   */
+   // Return single Booking with parent Room fields for pre-filling the service request form.  
   @AuraEnabled(cacheable=true)
   public static Booking__c getBookingById(Id bookingId) {
     if (bookingId == null) {
@@ -70,12 +66,13 @@ public with sharing class CaseController {
     if (contactId == null) {
       throw new AuraHandledException('No Contact found for current user.');
     }
-
+    //Account acc=[SELECT Id FROM Account WHERE Name='Taj Hotel' LIMIT 1];
+    //acc.Id can also be used.
     Case newCase = new Case(
       Subject = subject,
       Comments__c = comments,
       ContactId = contactId,
-      AccountId = '001gL00000H1UdNQAV', // Hotel Taj account
+      AccountId = '001gL00000H1UdNQAV', // Hotel Taj account->Hard coded account,as working with only one account.
       Origin = 'Community',
       Status = 'Working',
       Request_Type__c = requestType, // Service Request
@@ -87,6 +84,7 @@ public with sharing class CaseController {
   }
 
   @AuraEnabled(cacheable=true)
+  //To get the list of cases for the user to display in LWC component.
   public static List<Case> getCases() {
     Id contactId = UserUtils.getSessionContactId();
     if (contactId == null) {

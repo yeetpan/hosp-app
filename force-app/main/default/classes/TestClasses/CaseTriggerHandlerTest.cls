@@ -11,7 +11,7 @@ public class CaseTriggerHandlerTest {
             LastName = 'GM',
             Alias = 'tgm',
             Email = 'gm@test.com',
-            Username = 'gmuser' + System.currentTimeMillis() + '@test.com',
+            Username = 'gmuser'  + '@test.com',
             ProfileId = gmProfile.Id,
             TimeZoneSidKey = 'Asia/Kolkata',
             LocaleSidKey = 'en_US',
