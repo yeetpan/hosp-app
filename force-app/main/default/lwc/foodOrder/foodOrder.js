@@ -1,5 +1,6 @@
 import { LightningElement, track, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { refreshApex } from '@salesforce/apex';
 import getActiveBookings from '@salesforce/apex/FoodOrderController.getActiveBookings';
 import getFoodItems from '@salesforce/apex/FoodOrderController.getFoodItems';
 import placeFoodOrder from '@salesforce/apex/FoodOrderController.placeFoodOrder';
@@ -8,14 +9,16 @@ import getOrderHistory from '@salesforce/apex/FoodOrderController.getOrderHistor
 import cancelOrder from '@salesforce/apex/FoodOrderController.cancelOrder';
 
 export default class FoodOrder extends LightningElement {
-     selectedBooking;
+    selectedBooking;
     @track bookingOptions = [];
     specialNotes = '';
     @track foodItems = [];
     @track draftValues = [];
-
     @track activeOrders = [];
     @track orderHistory = [];
+
+    wiredActiveOrdersResult;
+    wiredHistoryResult;
 
     columns = [
         { label: 'Item Name', fieldName: 'Name', type: 'text' },
@@ -23,22 +26,20 @@ export default class FoodOrder extends LightningElement {
         { label: 'Quantity', fieldName: 'Quantity__c', type: 'number', editable: true }
     ];
 
-    // 1. Fetch Active Bookings
+    // --- Fetch Active Bookings ---
     @wire(getActiveBookings)
     wiredBookings({ data, error }) {
         if (data) {
-            
             this.bookingOptions = data.map(b => ({
                 label: b.Room__r.Name,
                 value: b.Id
             }));
-            //console.log(this.bookingOptions)
         } else if (error) {
             console.error(error);
         }
     }
 
-    // 2. Fetch Food Items
+    // --- Fetch Food Items ---
     @wire(getFoodItems)
     wiredFoodItems({ data, error }) {
         if (data) {
@@ -47,50 +48,51 @@ export default class FoodOrder extends LightningElement {
                 Name: f.Name,
                 Price__c: f.Price__c,
                 Quantity__c: 0
-            }
-            
-        ));
-        //console.log(this.foodItems)    
-    } 
-        else if (error) {
+            }));
+        } else if (error) {
             console.error(error);
         }
     }
 
-    // 3. Fetch Orders
-    connectedCallback() {
-        this.loadOrders();
+    // --- Fetch Active Orders ---
+    @wire(getActiveOrders)
+    wiredActiveOrders(result) {
+        this.wiredActiveOrdersResult = result;
+        if (result.data) {
+            this.activeOrders = result.data.filter(
+                o => o.Status__c === 'Ordered' || o.Status__c === 'In Progress'
+            );
+        } else if (result.error) {
+            console.error(result.error);
+        }
     }
 
-    async loadOrders() {
-    try {
-        const [active, history] = await Promise.all([
-            getActiveOrders(),
-            getOrderHistory()
-        ]);
-
-        // ✅ store properly segregated
-        this.activeOrders = (active || []).filter(
-            o => o.Status__c === 'Ordered' || o.Status__c === 'In Progress'
-        );
-
-        this.orderHistory = (history || []).filter(
-            o => o.Status__c === 'Cancelled' || o.Status__c === 'Completed' || o.Status__c === 'Reached'
-        );
-
-    } catch (error) {
-        console.error('Error loading orders:', error);
-        this.showToast('Error', 'Failed to load orders', 'error');
+    // --- Fetch Order History ---
+    @wire(getOrderHistory)
+    wiredHistory(result) {
+        this.wiredHistoryResult = result;
+        if (result.data) {
+            this.orderHistory = result.data.filter(
+                o => o.Status__c === 'Cancelled' || 
+                     o.Status__c === 'Completed' || 
+                     o.Status__c === 'Reached'
+            );
+        } else if (result.error) {
+            console.error(result.error);
+        }
     }
-}
+
+    // Booking change
     handleBookingChange(event) {
         this.selectedBooking = event.detail.value;
     }
 
+    // Notes change
     handleNotesChange(event) {
         this.specialNotes = event.detail.value;
     }
 
+    // Quantity update
     handleSave(event) {
         const updates = event.detail.draftValues;
         updates.forEach(u => {
@@ -103,6 +105,7 @@ export default class FoodOrder extends LightningElement {
         this.foodItems = [...this.foodItems];
     }
 
+    // Place order
     async handlePlaceOrder() {
         const orderedItems = this.foodItems
             .filter(i => i.Quantity__c > 0)
@@ -118,40 +121,61 @@ export default class FoodOrder extends LightningElement {
         }
 
         try {
-            await placeFoodOrder({ bookingId: this.selectedBooking, specialNotes: this.specialNotes, items: orderedItems });
+            await placeFoodOrder({ 
+                bookingId: this.selectedBooking, 
+                specialNotes: this.specialNotes, 
+                items: orderedItems 
+            });
             this.showToast('Success', 'Order placed successfully!', 'success');
-            this.loadOrders();
+
+            await refreshApex(this.wiredActiveOrdersResult);
+            await refreshApex(this.wiredHistoryResult);
+
             this.resetForm();
+            
+
         } catch (err) {
             console.error(err);
             this.showToast('Error', err.body.message, 'error');
         }
     }
 
+    // Cancel order
     async handleCancel(event) {
         const orderId = event.target.dataset.id;
         try {
             await cancelOrder({ orderId });
             this.showToast('Success', 'Order cancelled.', 'success');
-            this.connectedCallback();
+
+            // 🔄 refresh both lists
+            await refreshApex(this.wiredActiveOrdersResult);
+            await refreshApex(this.wiredHistoryResult);
+
         } catch (err) {
             console.error(err);
             this.showToast('Error', err.body.message, 'error');
         }
     }
 
+    // Reset form
     resetForm() {
         this.selectedBooking = null;
         this.specialNotes = '';
         this.foodItems = this.foodItems.map(f => ({ ...f, Quantity__c: 0 }));
     }
 
-    handleTabChange(event) {
-    const tabValue = event.target.value;
-    if (tabValue === 'activeOrders' || tabValue === 'history') {
-        this.loadOrders();
+    // Tab change → refresh respective data
+    async handleTabChange(event) {
+        const tabValue = event.target.value;
+        if (tabValue === 'activeOrders') {
+            await refreshApex(this.wiredActiveOrdersResult);
+        }
+        if (tabValue === 'history') {
+            await refreshApex(this.wiredHistoryResult);
+        }
     }
-}
+
+    // Toast helper
     showToast(title, message, variant) {
         this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
     }

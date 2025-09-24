@@ -1,6 +1,6 @@
 <template>
   <lightning-card title="Food Orders" icon-name="standard:orders">
-    <lightning-tabset onactive={handleTabChange}>
+    <lightning-tabset onactive={handleTabChange} >
       
       <!-- 1. Place Order -->
       <lightning-tab label="Place Order" value="placeOrder">
@@ -50,7 +50,7 @@
 
       <!-- 2. Active Orders -->
        
-      <lightning-tab label="Active Orders" value="activeOrders">
+      <lightning-tab label="Active Orders" value="activeOrders" >
         <template if:true={activeOrders}>
           <div class="slds-p-around_medium slds-scrollable_y orders-box">
             <template for:each={activeOrders} for:item="order">

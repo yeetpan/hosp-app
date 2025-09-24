@@ -49,7 +49,14 @@ public with sharing class DashboardController {
             SELECT COUNT() 
             FROM Booking__c 
             WHERE CreatedById = :currentUserId
-            AND Booking_Status__c IN ('Checked-Out','Cancelled')
+            AND Booking_Status__c = 'Checked-Out'
+        ]);
+
+        stats.put('CancelledBookings', [
+            SELECT COUNT() 
+            FROM Booking__c 
+            WHERE CreatedById = :currentUserId
+            AND Booking_Status__c = 'Cancelled'
         ]);
 
         // ---------------- SERVICE REQUESTS ----------------
