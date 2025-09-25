@@ -73,8 +73,7 @@ export default class FoodOrder extends LightningElement {
         this.wiredHistoryResult = result;
         if (result.data) {
             this.orderHistory = result.data.filter(
-                o => o.Status__c === 'Cancelled' || 
-                     o.Status__c === 'Completed' || 
+                o => o.Status__c === 'Cancelled' ||  
                      o.Status__c === 'Reached'
             );
         } else if (result.error) {

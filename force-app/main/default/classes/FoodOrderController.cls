@@ -87,7 +87,7 @@ public with sharing class FoodOrderController {
                    (SELECT Id, Food_Item__r.Name, Quantity__c, Line_Total__c
                     FROM Food_Order_Items__r)
             FROM Food_Order__c
-            WHERE Status__c IN ('Ordered', 'Preparing', 'Reached')
+            WHERE Status__c IN ('Ordered', 'Preparing')
             ORDER BY CreatedDate DESC
         ];
     }

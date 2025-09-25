@@ -8,7 +8,6 @@ public without sharing class CaseTriggerHandler {
         }
 
         if (bookingCases.isEmpty()) return;
-
         Id gmProfileId = [SELECT Id FROM Profile WHERE Name = 'General_Manager' LIMIT 1].Id;
 
         //bulkification
