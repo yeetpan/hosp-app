@@ -1,4 +1,4 @@
-public  class BookingTriggerHandler {
+public  without sharing class BookingTriggerHandler {
     public static void handleAfterUpdate(List<Booking__c> newBookings,Map<Id,Booking__c> oldBookingsMap){
         if(newBookings.isEmpty()) return;
         Id gmProfileId=[SELECT Id FROM Profile WHERE Name='General_Manager' LIMIT 1].Id;
@@ -11,9 +11,10 @@ public  class BookingTriggerHandler {
                 Task newTask=new Task();
                 newTask.WhatId=book.Id;
                 newTask.Subject='Investigate Booking Cancelled for '+book.Name;              
-                newTask.WhoId=gmUsers[0].ContactId;
+                newTask.WhoId=book.Guestt__r.Id;
                 newTask.Status='Not Started';
                 newTask.OwnerId=gmUsers[0].Id;
+                newTask.ActivityDate=System.today().addDays(7);
                 newTasks.add(newTask);
             }
         }

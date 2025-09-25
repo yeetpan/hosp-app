@@ -78,8 +78,8 @@ export default class BookingList extends NavigationMixin(LightningElement) {
         }
         return this.bookings.filter(b => b.status === this.selectedStatus);
     }
-    //  Render callback on component load.
-    renderedCallback() {
+    //  Connected callback on component load.
+    connectedCallback() {
         refreshApex(this.wiredResult);
     }
 }
