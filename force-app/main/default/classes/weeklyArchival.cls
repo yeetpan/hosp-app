@@ -1,7 +1,6 @@
-global  class WeeklyArchival implements Schedulable{
+global  class weeklyArchival implements Schedulable{
     global void execute(SchedulableContext sc){
-        System.enqueueJob(new BookingQueueArchival(),200);
-
-        System.enqueueJob(new FoodOrderQueueArchival(),200);
+        System.enqueueJob(new BookingQueueArchival());
+        System.enqueueJob(new FoodOrderQueueArchival());
     } 
 }

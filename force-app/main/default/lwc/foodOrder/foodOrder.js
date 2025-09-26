@@ -146,7 +146,7 @@ export default class FoodOrder extends LightningElement {
             await cancelOrder({ orderId });
             this.showToast('Success', 'Order cancelled.', 'success');
 
-            // 🔄 refresh both lists
+            //  refresh both wired results to reflect changes quick
             await refreshApex(this.wiredActiveOrdersResult);
             await refreshApex(this.wiredHistoryResult);
 

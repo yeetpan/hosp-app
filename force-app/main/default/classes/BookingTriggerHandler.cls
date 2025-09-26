@@ -7,11 +7,11 @@ public  without sharing class BookingTriggerHandler {
         // as of now only one general manager is present so no bulkification done.
         List<Task>newTasks=new List<Task>();    
         for(Booking__c book:newBookings){
-            if(oldBookingsMap.get(book.id).Booking_Status__c!='Cancelled' && book.Booking_Status__c=='Cancelled'){
+            if(oldBookingsMap.get(book.id).Booking_Status__c!='Cancelled' && book.Booking_Status__c=='Cancelled' && book.Guestt__c!=null){
                 Task newTask=new Task();
                 newTask.WhatId=book.Id;
                 newTask.Subject='Investigate Booking Cancelled for '+book.Name;              
-                newTask.WhoId=book.Guestt__r.Id;
+                newTask.WhoId=book.Guestt__c;
                 newTask.Status='Not Started';
                 newTask.OwnerId=gmUsers[0].Id;
                 newTask.ActivityDate=System.today().addDays(7);
