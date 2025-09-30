@@ -19,7 +19,7 @@ public  without sharing class BookingTriggerHandler {
             }
         }
         if(!newTasks.isEmpty()){
-            Database.insert(newTasks,false);
+            Database.insert(newTasks);
         }
     }
 }

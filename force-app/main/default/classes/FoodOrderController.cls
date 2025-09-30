@@ -43,12 +43,12 @@ public with sharing class FoodOrderController {
         foodItemIds.add(wrap.foodItemId);
     }
 
-    // Step 3: Query all Food Items once
+    // store food items in the map to avoid multiple queries.
     Map<Id, Food_Item__c> foodItemMap = new Map<Id, Food_Item__c>(
         [SELECT Id, Price__c FROM Food_Item__c WHERE Id IN :foodItemIds]
     );
 
-    // Step 4: Prepare Order Items
+    // now create list to insert via DML.
     List<Food_Order_Item__c> orderItems = new List<Food_Order_Item__c>();
     Decimal totalAmount = 0;
 

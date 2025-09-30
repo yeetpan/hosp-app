@@ -44,6 +44,7 @@ handleCheckInChange(event) {
     if (this.checkOut && this.checkOut <= this.checkIn) {
         this.showToast('Invalid Date', 'Checkout must be after Check-in.', 'error');
         this.checkOut = null;
+        this.checkIn=null;
     }
 }
 
@@ -62,7 +63,13 @@ handleCheckOutChange(event) {
         this.checkOut = null;
     }
 }
-    handleGuestsChange(event) { this.guests = event.target.value; }
+    handleGuestsChange(event) { 
+        this.guests = event.target.value;
+        if (this.guests > 4) {
+            this.showToast('Validation Error', 'Maximum 4 guests per room.', 'error');
+            this.guests=null;
+        }
+     }
 
     async handleRoomTypeChange(event) {
         this.roomType = event.detail.value;
@@ -115,7 +122,7 @@ handleCheckOutChange(event) {
             this[NavigationMixin.Navigate]({
                 type: 'standard__webPage',
                 attributes: {
-                    url: '/bookinglist'   // community page URL
+                    url: '/bookinglist'   
                 }
             });
         } catch (error) {

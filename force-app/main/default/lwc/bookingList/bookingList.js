@@ -22,7 +22,7 @@ const COLUMNS = [
 
 export default class BookingList extends NavigationMixin(LightningElement) {
     @track bookings = [];
-    columns = COLUMNS;
+    columns = COLUMNS;    
     loading = true;
 
     @track selectedStatus = 'Active';

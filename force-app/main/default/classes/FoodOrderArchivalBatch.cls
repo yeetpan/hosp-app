@@ -1,10 +1,13 @@
-global with sharing class FoodOrderArchivalBatch implements Database.Batchable<sObject> {
+global  class FoodOrderArchivalBatch implements Database.Batchable<sObject> {
     global Database.QueryLocator start(Database.BatchableContext bc){
-        String query='SELECT Id,Name,Status__c,Is_Archived__c FROM Food_Order__c WHERE Status__c = \'Cancelled\' AND Is_Archived__c=\'false\'';
+        String query='SELECT Id,Name,Status__c,Is_Archived__c FROM Food_Order__c WHERE Status__c = \'Cancelled\' AND Is_Archived__c=false';
         return Database.getQueryLocator(query);
     }
 
     global void execute(Database.BatchableContext bc, List<Food_Order__c> scope){
+        if(scope.isEmpty()){
+            return;
+        }
         for(Food_Order__c f:scope){
             f.Is_Archived__c=true;
         }

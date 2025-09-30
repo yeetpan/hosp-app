@@ -6,34 +6,32 @@
         </div>
     </template>
 
-    <!-- Case Cards inside parent card -->
+    <!-- Case Tracker -->
     <template if:true={hasCases}>
         <lightning-card title="My Service Requests" icon-name="standard:case">
             <div class="slds-p-around_medium">
                 <div class="slds-scrollable_y" style="max-height: 500px;">
                     <template for:each={cases} for:item="caseItem">
-                        <lightning-card key={caseItem.Id} class="slds-m-bottom_medium" icon-name="standard:record">
-                            <!-- Dynamic Title -->
-                            <h3 slot="title">Case {caseItem.CaseNumber}</h3>
-
-                            <div class="slds-p-around_medium slds-border_bottom">
-                                <p class="slds-text-title_bold">Subject</p>
-                                <p class="slds-m-bottom_small">{caseItem.Subject}</p>
-
-                                <p class="slds-text-title_bold">Request Type</p>
-                                <p class="slds-m-bottom_small">{caseItem.Request_Type__c}</p>
-
-                                <p class="slds-text-title_bold">Status</p>
-                                <p class="slds-m-bottom_small">{caseItem.Status}</p>
-
-                               
-                                <p class="slds-text-title_bold">Created</p>
-                                <p class="slds-m-bottom_small">{caseItem.CreatedDate}</p>
-
-                                <p class="slds-text-title_bold">Comments</p>
-                                <p>{caseItem.Comments__c}</p>
+                        <div key={caseItem.Id} class="slds-box slds-box_x-small slds-m-bottom_small slds-theme_default slds-grid slds-grid_vertical-align-center">
+                            
+                            <!-- Left: Case number + Subject -->
+                            <div class="slds-col slds-size_2-of-5">
+                                <p class="slds-text-title_caps slds-truncate">#{caseItem.CaseNumber}</p>
+                                <p class="slds-text-body_regular slds-truncate">{caseItem.Subject}</p>
                             </div>
-                        </lightning-card>
+
+                            <!-- Middle: Request type + status -->
+                            <div class="slds-col slds-size_2-of-5">
+                                <p class="slds-text-title_bold">{caseItem.Request_Type__c}</p>
+                                <lightning-badge label={caseItem.Status}></lightning-badge>
+                            </div>
+
+                            <!-- Right: Created Date -->
+                            <div class="slds-col slds-size_1-of-5 slds-text-align_right">
+                                <p class="slds-text-title_caps">Created</p>
+                                <p class="slds-text-body_small">{caseItem.CreatedDate}</p>
+                            </div>
+                        </div>
                     </template>
                 </div>
             </div>

@@ -63,7 +63,7 @@
                   <ul>
                     <template for:each={order.Food_Order_Items__r} for:item="oi">
                       <li key={oi.Id}>
-                        {oi.Food_Item__r.Name} — {oi.Quantity__c} × ₹{oi.Line_Total__c}
+                        {oi.Food_Item__r.Name} — {oi.Quantity__c} - ₹{oi.Line_Total__c}
                       </li>
                     </template>
                   </ul>
@@ -99,7 +99,7 @@
                   <ul>
                     <template for:each={order.Food_Order_Items__r} for:item="oi">
                       <li key={oi.Id}>
-                        {oi.Food_Item__r.Name} — {oi.Quantity__c} × ₹{oi.Line_Total__c}
+                        {oi.Food_Item__r.Name} — {oi.Quantity__c} - ₹{oi.Line_Total__c}
                       </li>
                     </template>
                   </ul>

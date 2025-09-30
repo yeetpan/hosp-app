@@ -7,7 +7,7 @@ export default class Dashboard extends LightningElement {
     wiredstatsResult;
     @wire(getDashboardStats)
     wiredStats(wiredstatsResult) {
-        this.wiredstatsResult== wiredstatsResult;
+        this.wiredstatsResult= wiredstatsResult;
         const { data, error } = wiredstatsResult;
         if (data) {
             this.stats = data;
@@ -16,7 +16,7 @@ export default class Dashboard extends LightningElement {
             console.error(error);
         }
     }
-    connectedCallback(){
+    renderedCallback(){
         refreshApex(this.wiredstatsResult);
     }
 }
