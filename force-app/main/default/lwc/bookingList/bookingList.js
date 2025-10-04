@@ -2,7 +2,7 @@ import { LightningElement, wire, track } from 'lwc';
 import getUserBookings from '@salesforce/apex/BookingController.getUserBookings';
 import { refreshApex } from '@salesforce/apex';
 import { NavigationMixin } from 'lightning/navigation';
-
+// columns to be displayed in the data table.
 const COLUMNS = [
     {
         label: 'Booking Id',
@@ -26,7 +26,7 @@ export default class BookingList extends NavigationMixin(LightningElement) {
     loading = true;
 
     @track selectedStatus = 'Active';
-
+    // options for the filter dropdown.
     statusOptions = [
         { label: 'Active (Confirmed & Checked-In)', value: 'Active' },
         { label: 'Confirmed', value: 'Confirmed' },
@@ -35,9 +35,9 @@ export default class BookingList extends NavigationMixin(LightningElement) {
         { label: 'Checked-Out', value: 'Checked-Out' },
         { label: 'All', value: 'All' }
     ];
-
+    // for refreshing the wired results.
     wiredResult; 
-
+    // wired method to get user bookings
     @wire(getUserBookings)
     wiredBookings(result) {
         this.wiredResult = result; 
@@ -62,11 +62,11 @@ export default class BookingList extends NavigationMixin(LightningElement) {
             this.loading = false;
         }
     }
-
+    // on filter change event.
     handleFilterChange(event) {
         this.selectedStatus = event.detail.value;
     }
-
+    //filter based on selected combobox value.
     get filteredBookings() {
         if (this.selectedStatus === 'All') {
             return this.bookings;
@@ -78,7 +78,7 @@ export default class BookingList extends NavigationMixin(LightningElement) {
         }
         return this.bookings.filter(b => b.status === this.selectedStatus);
     }
-    //  Connected callback on component load.
+    //  connected callback on component load.
     connectedCallback() {
         refreshApex(this.wiredResult);
     }

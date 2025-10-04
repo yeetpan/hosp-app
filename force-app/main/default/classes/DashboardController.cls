@@ -2,6 +2,7 @@ public with sharing class DashboardController {
     @AuraEnabled(cacheable=true)
     public static Map<String, Integer> getDashboardStats() {
         Id currentUserId = UserInfo.getUserId();
+        //send dashboard statistics data as map of string and integer to the Lightning Web Component.
         Map<String, Integer> stats = new Map<String, Integer>();
 
         stats.put('TotalOrders', [
@@ -79,6 +80,7 @@ public with sharing class DashboardController {
             WHERE CreatedById = :currentUserId
             AND Status = 'Solved'
         ]);
+        //sends the map
         return stats;
     }
 }

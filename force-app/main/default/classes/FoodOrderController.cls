@@ -57,7 +57,7 @@ public with sharing class FoodOrderController {
         if (fi == null) {
             throw new AuraHandledException('Invalid Food Item selected.');
         }
-
+        //get lineTotal for example if price is 100 and quantity is 2 then lineTotal will be 200.
         Decimal lineTotal = fi.Price__c * wrap.quantity;
 
         orderItems.add(new Food_Order_Item__c(
@@ -106,7 +106,7 @@ public with sharing class FoodOrderController {
         ];
     }
 
-    // 6. Cancel an Order
+    // 6. record Id is recieved by LWC to cancel the order and dml is performed.
     @AuraEnabled
     public static void cancelOrder(Id orderId) {
         Food_Order__c order = [SELECT Id, Status__c FROM Food_Order__c WHERE Id = :orderId LIMIT 1];
@@ -117,7 +117,7 @@ public with sharing class FoodOrderController {
         update order;
     }
 
-    // Wrapper class for food order items
+    // Wrapper class for food order items used to wrap the list of ids and list of quantites sent by LWC.
     public class FoodOrderItemWrapper {
         @AuraEnabled public Id foodItemId { get; set; }
         @AuraEnabled public Integer quantity { get; set; }

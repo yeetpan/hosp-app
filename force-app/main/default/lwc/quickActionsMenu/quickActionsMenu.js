@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 
+// uses navigation mixin to navigate to multiple pages as displayed.
 export default class QuickActionsMenu extends NavigationMixin(LightningElement) {
 
     navigateToBooking() {

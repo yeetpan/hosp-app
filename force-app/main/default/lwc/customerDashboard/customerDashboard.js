@@ -3,6 +3,7 @@ import { refreshApex } from '@salesforce/apex';
 import getDashboardStats from '@salesforce/apex/DashboardController.getDashboardStats';
 
 export default class Dashboard extends LightningElement {
+    // render data from apex class.
     @track stats = {};
     wiredstatsResult;
     @wire(getDashboardStats)
@@ -16,6 +17,7 @@ export default class Dashboard extends LightningElement {
             console.error(error);
         }
     }
+    // to make sure the data is refreshed.
     renderedCallback(){
         refreshApex(this.wiredstatsResult);
     }

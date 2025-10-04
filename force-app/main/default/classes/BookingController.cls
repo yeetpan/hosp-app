@@ -53,7 +53,7 @@ public with sharing class BookingController {
     }
     
     @AuraEnabled(cacheable=true)
-    //required to show the individual booking details in the card for the user.
+//required to show the individual booking details in the card for the user.
 public static Booking__c getBookingById(Id bookingId) {
     return [
         SELECT Id, Name, Booking_Status__c, Check_In_Date__c, Check_Out_Date__c,

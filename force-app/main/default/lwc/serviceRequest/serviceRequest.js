@@ -3,7 +3,7 @@ import getConfirmedBookings from '@salesforce/apex/CaseController.getConfirmedBo
 import getBookingById from '@salesforce/apex/CaseController.getBookingById';
 import createServiceRequest from '@salesforce/apex/CaseController.createServiceRequest';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-
+//columns to be displayed in the lightning data table.
 const COLUMNS = [
     { label: 'Booking Id', fieldName: 'Name', type: 'text' },
     { label: 'Room Number', fieldName: 'roomId', type: 'text' },
@@ -17,6 +17,7 @@ const COLUMNS = [
 ];
 
 export default class ServiceRequest extends LightningElement {
+    //to keep a track of bookings achieved from booking controller.
     @track bookings = [];
     columns = COLUMNS;
     @track loading = true;
@@ -98,10 +99,11 @@ export default class ServiceRequest extends LightningElement {
             { label: 'Cleaning', value: 'Cleaning' },
             { label: 'Maintenance', value: 'Maintenance' },
             { label: 'Billing', value: 'Billing' },
-            { label: 'Room Service', value: 'Room Service' }
+            { label: 'Room Service', value: 'Room Service' },
+            {label:'Refund',value:'Refund'}
         ];
     }
-
+    //validate all fields are present or not.
     validateForm() {
         if (!this.subject || !this.comments || !this.requestType) {
             this.showToast(
@@ -113,7 +115,7 @@ export default class ServiceRequest extends LightningElement {
         }
         return true;
     }
-
+    //call apex method to create service request.
     async handleCreateRequest() {
         if (!this.validateForm()) return;
 
@@ -127,7 +129,7 @@ export default class ServiceRequest extends LightningElement {
 
             this.showToast('Success', `Service request created successfully!`, 'success');
             this.closeModal();
-            await this.loadBookings(); // optional refresh
+            await this.loadBookings(); // to reflect changes.
         } catch (err) {
             this.showToast('Error', err?.body?.message || err.message, 'error');
         }

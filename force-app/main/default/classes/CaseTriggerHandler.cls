@@ -2,15 +2,18 @@ public without sharing class CaseTriggerHandler {
     public static void handleAfterInsert(List<Case> newCases) {
         List<Case> bookingCases = new List<Case>();
         for (Case c : newCases) {
+            //null checks to avoid inconsistent data.
             if (c.Booking__c != null) {
+                //if not null added to list.
                 bookingCases.add(c);
             }
         }
-
+        //if case not related to booking do not fire.
         if (bookingCases.isEmpty()) return;
+        //query the general manager profile id.
         Id gmProfileId = [SELECT Id FROM Profile WHERE Name = 'General_Manager' LIMIT 1].Id;
 
-        //bulkification
+        //get the general manager users(for now only one user but still took list as part of best practices)
         List<User> gmUsers = [SELECT Id, Email,Name FROM User WHERE ProfileId = :gmProfileId AND IsActive = true];
         //System.debug(gmUsers);
         if (gmUsers.isEmpty()) return;

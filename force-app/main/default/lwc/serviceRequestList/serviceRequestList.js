@@ -1,6 +1,6 @@
 import { LightningElement, wire, track } from 'lwc';
 import getCases from '@salesforce/apex/CaseController.getCases';
-
+// displays status of cases in readable only format.
 export default class ServiceRequestCards extends LightningElement {
     @track cases = [];
      error;
@@ -18,7 +18,7 @@ export default class ServiceRequestCards extends LightningElement {
             this.loading = false;
         }
     }
-
+    //returns the cases to be displayed.
     get hasCases() {
         return this.cases && this.cases.length > 0;
     }
